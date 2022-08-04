@@ -865,6 +865,11 @@ Resources:
               waitAfterCompletion: forever
         configSignal:
           commands:
+            4-changeHostName:
+              command: !Sub >
+                powershell.exe -Command Rename-Computer -NewName
+                ${VaultHostName} -Force -Restart
+              waitAfterCompletion: forever
             0-signalCompletion:
               command: !Sub >
                 cfn-signal.exe -e %ERRORLEVEL% --stack ${AWS::StackId} --resource VaultMachine --region ${AWS::Region}
@@ -933,6 +938,11 @@ Resources:
               waitAfterCompletion: forever
         configSignal:
           commands:
+            4-changeHostName:
+              command: !Sub >
+                powershell.exe -Command Rename-Computer -NewName
+                ${VaultDRHostName} -Force -Restart
+              waitAfterCompletion: forever
             0-signalCompletion:
               command: !Sub >
                 cfn-signal.exe -e %ERRORLEVEL% --stack ${AWS::StackId} --resource VaultDRMachine --region ${AWS::Region}
@@ -1350,6 +1360,9 @@ Parameters:
     Type: String
     Description: Enter a name for the Vault instance.
     Default: CyberArk Vault
+  VaultHostName:
+    Default: CyberArk-Vault
+    Description: Enter a name for the Vault hostname.
   VaultMasterPassword:
     Type: String
     Description: Enter a password for the Primary Vault Master user.
@@ -1426,6 +1439,9 @@ Parameters:
     Type: String
     Description: Enter a name for the CPM instance.
     Default: CyberArk CPM
+  CPMHostName:
+    Default: CyberArk-CPM
+    Description: Enter a name for the CPM hostname.
   CPMInstanceType:
     Type: String
     Description: Select the instance type of the CPM instance.
@@ -1467,6 +1483,9 @@ Parameters:
     Type: String
     Description: Enter a name for the PSM instance.
     Default: CyberArk PSM
+  PSMHostName:
+    Default: CyberArk-PSM
+    Description: Enter a name for the PSM hostname.
   PSMInstanceType:
     Type: String
     Description: Select the instance type of the PSM instance.
@@ -1485,6 +1504,9 @@ Parameters:
     Type: String
     Description: Enter a name for the PSM SSH Proxy instance.
     Default: CyberArk PSM SSH Proxy
+  PSMPHostName:
+    Default: CyberArk-PSMP
+    Description: Enter a name for the PSMP hostname.
   PSMPInstanceType:
     Type: String
     Description: Select the instance type of the PSM SSH Proxy instance.
@@ -1554,6 +1576,7 @@ Metadata:
           default: Primary Vault and DR Vault configuration
         Parameters:
           - VaultInstanceName
+          - VaultHostName
           - VaultAdminPassword
           - RetypeAdminPassword
           - VaultMasterPassword
@@ -1570,6 +1593,7 @@ Metadata:
           default: CPM configuration
         Parameters:
           - CPMInstanceName
+          - CPMtHostName
           - CPMInstanceType
           - CPMInstanceSecurityGroups
           - CPMInstanceSubnetId
@@ -1585,6 +1609,7 @@ Metadata:
           default: PSM configuration
         Parameters:
           - PSMInstanceName
+          - PSMtHostName
           - PSMInstanceType
           - PSMInstanceSecurityGroups
           - PSMInstanceSubnetId
@@ -1592,6 +1617,7 @@ Metadata:
           default: PSM SSH Proxy configuration
         Parameters:
           - PSMPInstanceName
+          - PSMPHostName
           - PSMPInstanceType
           - PSMPInstanceSecurityGroups
           - PSMPInstanceSubnetId
@@ -1614,6 +1640,8 @@ Metadata:
         default: Recovery Public Key
       VaultInstanceName:
         default: Vault Instance Name
+      VaultHostName:
+        default: Vault Host Name
       VaultAdminPassword:
         default: Primary Vault Admin Password
       RetypeAdminPassword:
@@ -1640,6 +1668,8 @@ Metadata:
         default: Vault DR Instance Subnet Id
       CPMInstanceName:
         default: CPM Instance Name
+      CPMHostName:
+        default: CPM Host Name
       CPMInstanceType:
         default: CPM Instance Type
       CPMInstanceSecurityGroups:
@@ -1658,6 +1688,8 @@ Metadata:
         default: PVWA FQDN (Optional)
       PSMInstanceName:
         default: PSM Instance Name
+      PSMHostName:
+        default: PSM Host Name
       PSMInstanceType:
         default: PSM Instance Type
       PSMInstanceSecurityGroups:
@@ -1666,6 +1698,8 @@ Metadata:
         default: PSM Instance Subnet Id
       PSMPInstanceName:
         default: PSM SSH Proxy Instance Name
+      PSMPHostName:
+        default: PSMP Host Name
       PSMPInstanceType:
         default: PSM SSH Proxy Instance Type
       PSMPInstanceSecurityGroups:
