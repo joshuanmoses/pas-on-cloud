@@ -22,6 +22,16 @@ Resources:
       LogGroupName: !Sub '${LogGroup}'
       LogStreamName: CPMMachine/CPMRegistrationLog
     DeletionPolicy: Retain
+
+
+
+testtesttesttesttesttesttest
+testtesttesttesttesttest
+testtesttest
+test
+
+
+
   CPMSetLocalServiceLog:
     Type: 'AWS::Logs::LogStream'
     Properties:
@@ -1480,7 +1490,7 @@ Metadata:
         default: Primary Vault Master Password
       RetypeMasterPassword:
         default: Retype Primary Vault Master Password
-      VaultDRPassword:
+      VausssssssRPasswordsssssss:
         default: DR User Password
       RetypeDRPassword:
         default: Retype DR User Password
